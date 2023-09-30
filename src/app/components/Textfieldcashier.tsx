@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { AllContext } from './Context';
 
 
-interface TextfieldcashierProps{
+type TextfieldcashierProps = {
   cashierName:string;
   setCashierName:React.Dispatch<React.SetStateAction<string>>;
 }

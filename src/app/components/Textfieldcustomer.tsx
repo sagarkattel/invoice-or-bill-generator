@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { AllContext } from './Context';
 
-interface TextfieldcustomerProps{
+type TextfieldcustomerProps={
   customerName:string;
   setCustomerName:React.Dispatch<React.SetStateAction<string>>;
 }

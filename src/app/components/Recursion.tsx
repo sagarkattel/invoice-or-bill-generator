@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react'
 
-interface itemsDataProp{
+type itemsDataProp={
   id: number;
   qty:number;
   price:number;
@@ -10,7 +10,7 @@ interface itemsDataProp{
 }
 
 
-interface RecursionProps{
+type RecursionProps = {
   index:number;
   itemsData:{ [key: string]: itemsDataProp };
   setItemsData:React.Dispatch<React.SetStateAction<{
@@ -82,17 +82,39 @@ const Recursion = ({ index, itemsData, setItemsData }: RecursionProps) => {
           <input
             type="number"
             className="bg-[#f3f4f6] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="QTY" onChange={(e) => handleInputChange(index, "qty", parseInt(e.target.value))}
+            placeholder="QTY" onChange={(e) => {
+              const inputValue = parseFloat(e.target.value);
+              if (inputValue > 0 || e.target.value === "") {
+              handleInputChange(index, "qty", inputValue);
+              }
+              else{
+                alert("Quantity cannot be negative or Zero");
+                // handleInputChange(index, "qty", "");
+              }
+            }}
             required
           />
         </span>
         <span className="w-[120px]">
-          <input
-            type="number"
-            className="bg-[#f3f4f6] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Price"
-            required onChange={(e) => handleInputChange(index, "price", parseInt(e.target.value))}
-          />
+        <input
+  // type="number"
+  type="text"
+
+  className="bg-[#f3f4f6] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+  placeholder="Price"
+  required
+  onChange={(e) => {
+    const inputValue = parseFloat(e.target.value);
+    if (inputValue > 0 || e.target.value === "") {
+      // Allow positive numbers or empty input (clearing the field)
+      handleInputChange(index, "price", inputValue);
+    }
+    else{
+      alert("Cannot be negative or Zero");
+    }
+  }}
+/>
+
         </span>
 
 

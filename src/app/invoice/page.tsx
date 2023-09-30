@@ -7,7 +7,7 @@ import Textfieldcashier from '../components/Textfieldcashier';
 import Textfieldcustomer from '../components/Textfieldcustomer';
 import Table from '../components/Table';
 import { AllContext } from '../components/Context';
-import Detail from '../components/Detail';
+import Detail from '../components/InvoiceDetail';
 
 interface InoviceProps{
   invoiceNumber:number;
@@ -84,12 +84,12 @@ const Invoice = () => {
 
               <div className='flex flex-col gap-3'>
               <span className='font-bold'>Tax rate:</span>
-              <span><input type="number" className="bg-[#f3f4f6] border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tax rate" required value={taxrate} onChange={(e)=>setTaxrate(parseInt(e.target.value))}/></span>
+              <span><input type="number" className="bg-[#f3f4f6] border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tax rate" required value={taxrate} onChange={(e)=>setTaxrate(parseFloat(e.target.value))}/></span>
               </div>
 
               <div className='flex flex-col gap-3'>
               <span className='font-bold'>Discount rate:</span>
-              <span><input type="number" className="bg-[#f3f4f6] border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Discount rate" required onChange={(e)=>setDiscountrate(parseInt(e.target.value))} value={discountrate}/></span>
+              <span><input type="number" className="bg-[#f3f4f6] border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Discount rate" required onChange={(e)=>setDiscountrate(parseFloat(e.target.value))} value={discountrate}/></span>
               </div>
 
             </div>
@@ -97,17 +97,17 @@ const Invoice = () => {
 
             <div className='flex flex-row gap-[300px]'>
               <span className='font-bold'>Subtotal:</span>
-              <span className='ml-auto'>{total}</span>
+              <span className='ml-auto'>{total?total.toFixed(2):0}</span>
             </div>
 
             <div className='flex flex-row gap-[300px]'>
             <span className='font-bold'>Discount:</span>
-              <span className='ml-auto'>({discountrate}%) {discount}</span>
+              <span className='ml-auto'>({discountrate?discountrate.toFixed(2):0}%) {discount?discount.toFixed(2):0}</span>
             </div>
 
             <div className='flex flex-row gap-[300px]'>
             <span className='font-bold'>Tax:</span>
-              <span className='ml-auto'>({taxrate}%) {tax}</span>
+              <span className='ml-auto'>({taxrate?taxrate.toFixed(2):0}%) {tax?tax.toFixed(2):0}</span>
             </div>
 
             <div>
@@ -118,7 +118,7 @@ const Invoice = () => {
 
             <div className='flex flex-row gap-[300px]'>
             <span className='font-bold'>Total:</span>
-              <span className='ml-auto'>{grandTotal}</span>
+              <span className='ml-auto'>{grandTotal?grandTotal.toFixed(2):0}</span>
             </div>
 
             <div className='ml-auto mb-10'>

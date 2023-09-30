@@ -4,7 +4,7 @@ import React, { createContext, useEffect, useState } from "react";
 
 export const AllContext = createContext<any>(null);
 
-interface itemsDataProp {
+type itemsDataProp = {
   id: number;
   qty: number;
   price: number;
@@ -12,7 +12,11 @@ interface itemsDataProp {
   item: string;
 }
 
-const Context = ({ children }:any) => {
+type MainChild = {
+  children:React.ReactNode;
+}
+
+const Context = ({ children }:MainChild) => {
   const [cashierName, setCashierName] = useState<string>("");
   const [customerName, setCustomerName] = useState<string>("");
   const [invoiceNumber, setInvoiceNumber] = useState<Number>();
@@ -38,7 +42,7 @@ const Context = ({ children }:any) => {
   const handleOpen = () => setOpen(!open);
 
   // Function to calculate the grand total based on itemsData
-  const calculateGrandTotal = (itemsData: any) => {
+  const calculateGrandTotal = (itemsData: any):number => {
     let grandTotal = 0;
     for (const index in itemsData) {
       if (itemsData[index].total) {

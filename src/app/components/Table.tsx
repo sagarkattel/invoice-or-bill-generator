@@ -3,7 +3,7 @@ import React ,{useContext, useState} from "react";
 import Recursion from "./Recursion";
 import { AllContext } from "./Context"
 
-interface itemsDataProp{
+type itemsDataProp={
   id: number;
   qty:number;
   price:number;
@@ -11,7 +11,7 @@ interface itemsDataProp{
   item:string;
 }
 
-interface TableProps{
+type TableProps = {
   itemsData:{ [key: string]: itemsDataProp };
   setItemsData:React.Dispatch<React.SetStateAction<{[key: string]: itemsDataProp}>>
 }
@@ -40,7 +40,7 @@ const Table = () => {
       <div>
         <hr className="h-px my-3 bg-gray-200 border-0 dark:bg-gray-700" />
       </div>
-      {inputValues.map((input,index)=>(
+      {inputValues.map((input:string,index:number)=>(
         <div key={index}><Recursion index={index} itemsData={itemsData} setItemsData={setItemsData} /></div>
       ))
       

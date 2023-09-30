@@ -14,7 +14,7 @@ import { now } from "../utils/Date";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-interface itemsDataProp{
+type itemsDataProp = {
   id: number;
   qty:number;
   price:number;
@@ -23,7 +23,7 @@ interface itemsDataProp{
 }
 
 
-interface DetailProp{
+type DetailProp = {
   handleOpen:() => void;
   open:boolean;
   setOpen:React.Dispatch<React.SetStateAction<boolean>>;
@@ -50,8 +50,8 @@ const {handleOpen,open,invoiceNumber, cashierName, customerName,total, tax,disco
 const itemsArray = Object.values(itemsData);
 
 
-const showToastMessage = () => {
-  toast.error('Fill in all the blanks before downloading the PDF !', {
+const showToastMessage = (error:string):void => {
+  toast.error(error, {
     position: toast.POSITION.TOP_RIGHT
 });
 };
@@ -61,15 +61,37 @@ const showToastMessage = () => {
 
 const handleDownload=()=>{
 
+
   // Check if any fields in the itemsArray are empty
   const hasEmptyFields = itemsArray.some((item:itemsDataProp) => (
     !item.item || !item.qty || !item.price || !item.total
   ));
 
-  if (hasEmptyFields || !invoiceNumber || !cashierName || !customerName) {
-    showToastMessage();
-    return; 
+  // if (hasEmptyFields || !invoiceNumber || !cashierName || !customerName) {
+  //   showToastMessage("LOLOLO");
+  //   return; 
+  // }
+
+  
+  if(!invoiceNumber){
+    showToastMessage("Invoice Number is not mentioned");
+    return;
   }
+  else if(!cashierName){
+    showToastMessage("Cashier Name is Missing");
+    return;
+  }
+
+  else if(!customerName){
+    showToastMessage("Customer Name is Missing");
+    return;
+  }
+  else if(hasEmptyFields){
+    showToastMessage("Items Field Missing");
+    return;
+  }
+
+
 
   const pageWidth = 150; 
   const pageHeight = 210; 
@@ -96,14 +118,14 @@ Customer:                      ${customerName}
 ------------------------------------------
 ITEM         QTY     PRICE       AMOUNT
 ------------------------------------------
-${itemsArray.map((item:itemsDataProp) => `${item.item.padEnd(15)} ${item.qty.toString().padEnd(6)} ${item.price.toString().padEnd(10)} ${item.total.toString()}`).join("\n")}
+${itemsArray.map((item:itemsDataProp) => `${item.item.padEnd(15)} ${item.qty.toString().padEnd(6)} ${item.price.toFixed(2).toString().padEnd(10)} ${item.total.toFixed(2).toString()}`).join("\n")}
 
 ------------------------------------------
-Subtotal:              ${total}
-Discount:              ${discount}
-Tax:                   ${tax}
+Subtotal:              ${total.toFixed(2)}
+Discount:              ${discount.toFixed(2)}
+Tax:                   ${tax.toFixed(2)}
 ------------------------------------------
-Total:                 ${grandTotal}
+Total:                 ${grandTotal.toFixed(2)}
   `;
 
 
@@ -129,7 +151,7 @@ Total:                 ${grandTotal}
               <div className="flex flex-col">
                 <div className="flex flex-row gap-9">
                     <span className="font-bold">Invoice Number:</span>
-                    <span >{invoiceNumber}</span>
+                    <span >{invoiceNumber?invoiceNumber:""}</span>
                 </div>
 
                 <div className="flex flex-row gap-9">
@@ -157,12 +179,12 @@ Total:                 ${grandTotal}
             <hr className="h-px my-3 bg-gray-500 border-0 dark:bg-gray-700" />
             </div>
             
-              {itemsArray.map((item:itemsDataProp, index:number) => (
+              {itemsArray?.map((item:itemsDataProp, index:number) => (
                 <div className="flex flex-row gap-10" key={index}>
                   <span className="w-[120px]">{item.item}</span>
                   <span  className="w-[50px] ml-3">{item.qty}</span>
-                  <span className="w-[50px] ml-[-20px]">{item.price}</span>
-                  <span className="w-[50px] justify-center">{item.total}</span>
+                  <span className="w-[50px] ml-[-20px]">{item.price?item.price.toFixed(2):''}</span>
+                  <span className="w-[50px] justify-center">{item.total?item.total.toFixed(2):''}</span>
                 </div>
               ))}
 
@@ -173,17 +195,17 @@ Total:                 ${grandTotal}
 
             <div className="flex flex-row gap-9 mr-12">
                     <span className="font-bold">Subtotal:</span>
-                    <span className="ml-auto ">{total}</span>
+                    <span className="ml-auto ">{total?total.toFixed(2):0}</span>
             </div>
 
             <div className="flex flex-row gap-9 mr-12">
                     <span className="font-bold">Discount:</span>
-                    <span className="ml-auto">{discount}</span>
+                    <span className="ml-auto">{discount?discount.toFixed(2):0}</span>
             </div>
 
             <div className="flex flex-row gap-9 mr-12">
                     <span className="font-bold">Tax:</span>
-                    <span className="ml-auto">{tax}</span>
+                    <span className="ml-auto">{tax?discount.toFixed(2):0}</span>
             </div>
 
             <div>
@@ -192,7 +214,7 @@ Total:                 ${grandTotal}
 
             <div className="flex flex-row gap-9 mr-12">
                     <span className="font-bold">Total:</span>
-                    <span className="ml-auto ">{grandTotal}</span>
+                    <span className="ml-auto ">{grandTotal?grandTotal.toFixed(2):0}</span>
             </div>
 
 
